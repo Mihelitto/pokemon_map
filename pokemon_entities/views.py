@@ -33,7 +33,8 @@ def show_all_pokemons(request):
             folium_map,
             pokemon_entity.lat,
             pokemon_entity.lon,
-            request.build_absolute_uri(pokemon_entity.pokemon.image.url))
+            request.build_absolute_uri(pokemon_entity.pokemon.image.url)
+        )
 
     pokemons_on_page = []
     for pokemon in pokemons:
@@ -54,9 +55,12 @@ def show_pokemon(request, pokemon_id):
         pokemon = Pokemon.objects.get(id=pokemon_id)
     except Pokemon.DoesNotExist:
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
-    pokemon_properties = {"title_ru": pokemon.title,
-                          "img_url": request.build_absolute_uri(pokemon.image.url),
-                          "pokemon_id": pokemon.id}
+    pokemon_properties = {
+        "title_ru": pokemon.title,
+        "img_url": request.build_absolute_uri(pokemon.image.url),
+        "pokemon_id": pokemon.id,
+        "description": pokemon.description,
+    }
     pokemon_entities = PokemonEntity.objects.filter(pokemon=pokemon)
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
@@ -65,7 +69,8 @@ def show_pokemon(request, pokemon_id):
             folium_map,
             pokemon_entity.lat,
             pokemon_entity.lon,
-            request.build_absolute_uri(pokemon_entity.pokemon.image.url))
+            request.build_absolute_uri(pokemon_entity.pokemon.image.url)
+        )
 
     return render(request, "pokemon.html", context={'map': folium_map._repr_html_(),
                                                     'pokemon': pokemon_properties})
