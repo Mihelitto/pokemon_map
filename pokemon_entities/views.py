@@ -1,5 +1,4 @@
 import folium
-import json
 
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
@@ -11,14 +10,21 @@ MOSCOW_CENTER = [55.751244, 37.618423]
 DEFAULT_IMAGE_URL = "https://vignette.wikia.nocookie.net/pokemon/images/6/6e/%21.png/revision/latest/fixed-aspect-ratio-down/width/240/height/240?cb=20130525215832&fill=transparent"
 
 
-def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
+def add_pokemon(folium_map, pokemon_entitie, image_url=DEFAULT_IMAGE_URL):
     icon = folium.features.CustomIcon(
         image_url,
         icon_size=(50, 50),
     )
     folium.Marker(
-        [lat, lon],
+        [pokemon_entitie.lat, pokemon_entitie.lon],
         # Warning! `tooltip` attribute is disabled intentionally to fix strange folium cyrillic encoding bug
+        popup=folium.Popup(
+            f"<center><b>L</b> - {pokemon_entitie.level}<center>\
+             <p><b>H</b> - {pokemon_entitie.health} |\
+             <b>S</b> - {pokemon_entitie.strength}</p>\
+             <p><b>D</b> - {pokemon_entitie.defence} |\
+             <b>St</b> - {pokemon_entitie.stamina}</p>",
+            max_width=120),
         icon=icon,
     ).add_to(folium_map)
 
@@ -31,8 +37,7 @@ def show_all_pokemons(request):
     for pokemon_entity in pokemon_entities:
         add_pokemon(
             folium_map,
-            pokemon_entity.lat,
-            pokemon_entity.lon,
+            pokemon_entity,
             request.build_absolute_uri(pokemon_entity.pokemon.image.url)
         )
 
@@ -88,8 +93,7 @@ def show_pokemon(request, pokemon_id):
     for pokemon_entity in pokemon_entities:
         add_pokemon(
             folium_map,
-            pokemon_entity.lat,
-            pokemon_entity.lon,
+            pokemon_entity,
             request.build_absolute_uri(pokemon_entity.pokemon.image.url)
         )
 
