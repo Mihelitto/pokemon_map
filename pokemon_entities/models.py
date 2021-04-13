@@ -1,5 +1,15 @@
 from django.db import models
-from django.utils.timezone import now
+
+
+class PokemonElementType(models.Model):
+    title = models.CharField("Стихия", max_length=200)
+
+    def __str__(self):
+        return f"{self.title}"
+
+    class Meta:
+        verbose_name = "Стихия покемона"
+        verbose_name_plural = "Стихии покемонов"
 
 
 class Pokemon(models.Model):
@@ -15,6 +25,13 @@ class Pokemon(models.Model):
         null=True,
         related_name="next_evolutions",
         verbose_name="Из кого эволюционирует"
+    )
+    element_type = models.ManyToManyField(
+        PokemonElementType,
+        blank=True,
+        null=True,
+        related_name="pokemon",
+        verbose_name="Стихия"
     )
 
     def __str__(self):
