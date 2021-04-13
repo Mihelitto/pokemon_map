@@ -21,9 +21,10 @@ def add_pokemon(folium_map, pokemon_entitie, image_url=DEFAULT_IMAGE_URL):
         popup=folium.Popup(
             f"<center><b>L</b> - {pokemon_entitie.level}<center>\
              <p><b>H</b> - {pokemon_entitie.health} |\
-             <b>S</b> - {pokemon_entitie.strength}</p>\
-             <p><b>D</b> - {pokemon_entitie.defence} |\
-             <b>St</b> - {pokemon_entitie.stamina}</p>",
+             <b>St</b> - {pokemon_entitie.stamina}</p>\
+             <p><b>S</b> - {pokemon_entitie.strength} |\
+             <b>D</b> - {pokemon_entitie.defence}\
+             </p>",
             max_width=120),
         icon=icon,
     ).add_to(folium_map)
