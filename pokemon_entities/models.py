@@ -22,10 +22,10 @@ class PokemonElementType(models.Model):
 
 class Pokemon(models.Model):
     title = models.CharField("Название", max_length=200)
-    title_en = models.CharField("Название на английском", max_length=200, default="")
-    title_jp = models.CharField("Название на японском", max_length=200, default="")
+    title_en = models.CharField("Название на английском", max_length=200)
+    title_jp = models.CharField("Название на японском", max_length=200)
     image = models.ImageField("Изображение", upload_to="pokemons")
-    description = models.TextField("Описание", max_length=500, default="")
+    description = models.TextField("Описание", max_length=500)
     previous_evolution = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
@@ -51,7 +51,7 @@ class Pokemon(models.Model):
 
 
 class PokemonEntity(models.Model):
-    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, verbose_name="Покемон")
+    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, verbose_name="Покемон", related_name="pokemon_entities")
     lat = models.FloatField("Широта")
     lon = models.FloatField("Долгота")
 
